@@ -94,11 +94,11 @@ def read_list_and_data_preprocessing() -> pd.DataFrame:
 
 
 # 메일 전송 함수
-def send_mail(from_addr: str, to_addr: str, subject: str, content: str, image_number: str):
+def send_mail(from_addr: str, to_addr: str, to_name: str, subject: str, content: str, image_number: str):
     msg = MIMEMultipart() # MIMEMultipart()를 사용하면 여러개의 MIME 타입을 사용할 수 있음
     
-    msg['From'] = from_addr # 보내는 사람 메일 주소
-    msg['To'] = to_addr # 받는 사람 메일 주소
+    msg['From'] = '아이비클럽' # 보내는 사람 명칭
+    msg['To'] = to_name # 받는 사람 명칭
     msg['Date'] = formatdate(localtime=True)
     # msg['Cc'] = cc_addr # 참조 메일 주소
     # msg['Bcc'] = bcc_addr # 숨은 참조 메일 주소
@@ -119,6 +119,7 @@ def send_mail(from_addr: str, to_addr: str, subject: str, content: str, image_nu
     smtp.login(from_addr, mail_pass) # smtp.login('메일 주소', '비밀번호')
 
     smtp.sendmail(from_addr, to_addr, msg.as_string()) # smtp.sendmail('보내는 사람 메일 주소', '받는 사람 메일 주소', '메시지')
+    time.sleep(1)
     smtp.quit() # SMTP 서버 연결 종료
     print('메일 전송이 완료되었습니다.')
 
@@ -132,8 +133,8 @@ def background_scheduler():
         scheduler.add_job(
             send_mail,
             'date',
-            run_date=datetime(df.loc[i, '발송일'].year, df.loc[i, '발송일'].month, df.loc[i, '발송일'].day, 16, 8, i),
-            args=[mail_acc, df.loc[i, '이메일'], df.loc[i, '제목'], df.loc[i, '본문'], df.loc[i, '그림']],
+            run_date=datetime(df.loc[i, '발송일'].year, df.loc[i, '발송일'].month, df.loc[i, '발송일'].day, 17, 13, i),
+            args=[mail_acc, df.loc[i, '이메일'], df.loc[i, '사원명'], df.loc[i, '제목'], df.loc[i, '본문'], df.loc[i, '그림']],
             id=df.loc[i, '사원코드'],
             )
     scheduler.print_jobs()
