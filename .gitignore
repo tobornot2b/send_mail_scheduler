@@ -1,0 +1,15 @@
+/.ipynb_checkpoints
+/__pycache__
+/image
+
+*.dll
+*.xlsx
+*.xls
+*.db
+*.yaml
+*.csv
+*.py
+*.ipynb
+
+
+!send_mail_scheduler.py
