@@ -125,7 +125,7 @@ def send_mail(from_addr: str, to_addr: str, subject: str, content: str, image_nu
 
 # 메일 전송 스케줄러
 def background_scheduler():
-    scheduler = BackgroundScheduler(daemon=True)
+    scheduler = BackgroundScheduler(daemon=True, timezone='Asia/Seoul')
     scheduler.start()
     df = read_list_and_data_preprocessing()
     for i in df.index:
