@@ -133,7 +133,7 @@ def background_scheduler():
         scheduler.add_job(
             send_mail,
             'date',
-            run_date=datetime(df.loc[i, '발송일'].year, df.loc[i, '발송일'].month, df.loc[i, '발송일'].day, 17, 13, i),
+            run_date=datetime(df.loc[i, '발송일'].year, df.loc[i, '발송일'].month, df.loc[i, '발송일'].day, 16, 52, i),
             args=[mail_acc, df.loc[i, '이메일'], df.loc[i, '사원명'], df.loc[i, '제목'], df.loc[i, '본문'], df.loc[i, '그림']],
             id=df.loc[i, '사원코드'],
             )
