@@ -1,3 +1,13 @@
+'''
+다음의 조건이 만족되어야 한다.
+
+1. 보내는 사람의 구글 2단계 인증 활성화 (구글 계정 > 보안 > 2단계 인증)
+2. 앱 비밀번호 설정 및 숙지 (구글 계정 > 보안 > 앱 비밀번호)
+3. 보안 수준이 낮은 앱 허용 (구글 계정 > 보안 > 보안 수준이 낮은 앱 허용)
+4. 방화벽 smtp 관련 룰 혹은 대량 메일발송 룰 허용
+5. 스팸메일 수발신 관련 룰 확인 (ex: wblock)
+'''
+
 import smtplib
 from email.mime.multipart import MIMEMultipart # 메일의 Data 영역의 메시지를 만드는 모듈 (MIMEText, MIMEApplication, MIMEImage, MIMEAudio가 attach되면 바운더리 형식으로 변환)
 from email.mime.text import MIMEText # MIMEText('메일 내용', '메일 내용의 MIME 타입')
@@ -83,6 +93,11 @@ def read_list_and_data_preprocessing() -> pd.DataFrame:
         <br>
         감사합니다.<br>
         <br>
+        <br>
+        <br>
+        <h1>- 대표이사 -</h1>
+        <br>
+        <br>
         '''
         title_list.append(title)
         content_list.append(content)
@@ -111,7 +126,7 @@ def send_mail(from_addr: str, to_addr: str, to_name: str, subject: str, content:
     
     body = MIMEText(f"{content}</br><img src='cid:capture'>", 'html')
     msg.attach(body)
-    print(msg)
+    # print(msg)
 
     try:
         # TLS
@@ -126,10 +141,10 @@ def send_mail(from_addr: str, to_addr: str, to_name: str, subject: str, content:
         smtp.sendmail(from_addr, to_addr, msg.as_string()) # smtp.sendmail('보내는 사람 메일 주소', '받는 사람 메일 주소', '메시지')
         time.sleep(2)
         smtp.quit() # SMTP 서버 연결 종료
-        print(f'[{from_addr}] -> [{to_addr}] 메일 전송 완료!')
+        print(f'[{from_addr}] -> [{to_addr}]: {to_name} 메일 전송 완료!')
     except Exception as e:
         print('=' * 80)
-        print(f'[{from_addr}] -> [{to_addr}]')
+        print(f'[{from_addr}] -> [{to_addr}]: {to_name}')
         print('<<< 메일 전송에 실패하였습니다. >>>')
         print(e)
 
