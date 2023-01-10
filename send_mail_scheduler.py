@@ -124,11 +124,12 @@ def send_mail(from_addr: str, to_addr: str, to_name: str, subject: str, content:
 
         smtp.login(from_addr, mail_pass) # smtp.login('메일 주소', '비밀번호')
         smtp.sendmail(from_addr, to_addr, msg.as_string()) # smtp.sendmail('보내는 사람 메일 주소', '받는 사람 메일 주소', '메시지')
-        time.sleep(1)
+        time.sleep(2)
         smtp.quit() # SMTP 서버 연결 종료
-        print('<<< 메일 전송이 완료되었습니다. >>>')
+        print(f'[{from_addr}] -> [{to_addr}] 메일 전송 완료!')
     except Exception as e:
         print('=' * 80)
+        print(f'[{from_addr}] -> [{to_addr}]')
         print('<<< 메일 전송에 실패하였습니다. >>>')
         print(e)
 
@@ -142,7 +143,7 @@ def background_scheduler():
         scheduler.add_job(
             send_mail,
             'date',
-            run_date=datetime(df.loc[i, '발송일'].year, df.loc[i, '발송일'].month, df.loc[i, '발송일'].day, 16, 52, i),
+            run_date=datetime(df.loc[i, '발송일'].year, df.loc[i, '발송일'].month, df.loc[i, '발송일'].day, 8, 00, i),
             args=[mail_acc, df.loc[i, '이메일'], df.loc[i, '사원명'], df.loc[i, '제목'], df.loc[i, '본문'], df.loc[i, '그림']],
             id=df.loc[i, '사원코드'],
             )
