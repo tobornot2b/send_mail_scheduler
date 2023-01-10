@@ -113,15 +113,24 @@ def send_mail(from_addr: str, to_addr: str, to_name: str, subject: str, content:
     msg.attach(body)
     print(msg)
 
-    smtp = smtplib.SMTP('smtp.gmail.com', 587) # smtplib.SMTP('사용할 SMTP 서버의 URL', PORT)
-    smtp.ehlo() # SMTP 서버 연결
-    smtp.starttls() # TLS 암호화 (TLS 사용할 때에만 해당코드 입력)
-    smtp.login(from_addr, mail_pass) # smtp.login('메일 주소', '비밀번호')
+    try:
+        # TLS
+        smtp = smtplib.SMTP('smtp.gmail.com', 587) # smtplib.SMTP('사용할 SMTP 서버의 URL', PORT)
+        smtp.ehlo() # SMTP 서버 연결
+        smtp.starttls() # TLS 암호화 (TLS 사용할 때에만 해당코드 입력)
 
-    smtp.sendmail(from_addr, to_addr, msg.as_string()) # smtp.sendmail('보내는 사람 메일 주소', '받는 사람 메일 주소', '메시지')
-    time.sleep(1)
-    smtp.quit() # SMTP 서버 연결 종료
-    print('메일 전송이 완료되었습니다.')
+        # # SSL
+        # smtp = smtplib.SMTP_SSL('smtp.gmail.com', 465) # 위의 TLS와 SSL 둘 중 하나 선택해서 사용
+
+        smtp.login(from_addr, mail_pass) # smtp.login('메일 주소', '비밀번호')
+        smtp.sendmail(from_addr, to_addr, msg.as_string()) # smtp.sendmail('보내는 사람 메일 주소', '받는 사람 메일 주소', '메시지')
+        time.sleep(1)
+        smtp.quit() # SMTP 서버 연결 종료
+        print('<<< 메일 전송이 완료되었습니다. >>>')
+    except Exception as e:
+        print('=' * 80)
+        print('<<< 메일 전송에 실패하였습니다. >>>')
+        print(e)
 
 
 # 메일 전송 스케줄러
